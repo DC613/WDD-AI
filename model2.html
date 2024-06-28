@@ -94,12 +94,7 @@
             <!-- Create remaining divs with ids div13 to div20 -->
             <div id="div13" class="main-div"></div>
             <div id="div14" class="main-div"></div>
-            <div id="div15" class="main-div"></div>
-            <div id="div16" class="main-div"></div>
-            <div id="div17" class="main-div"></div>
-            <div id="div18" class="main-div"></div>
-            <div id="div19" class="main-div"></div>
-            <div id="div20" class="main-div"></div>
+
         </main>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -126,7 +121,7 @@
             };
         }
 
-/*
+
         let mnistData;
     async function loadDataset() {
       try {
@@ -199,10 +194,11 @@
                 metrics: ['accuracy']
             });
             globalModel = model;
-            tfvis.show.modelSummary({ name: 'Model Summary', tab: 'Model' }, model);
-            document.getElementById('div9').innerText = 'Model defined and compiled successfully.';
+            //tfvis.show.modelSummary({ name: 'Model Summary', tab: 'Model' }, model);
+            tfvis.show.modelSummary(document.getElementById('div9'), model);
+            //document.getElementById('div9').innerText = 'Model defined and compiled successfully.';
         }
-*/
+
         async function trainModel() {
             const trainData = mnistData.nextTrainBatch(5000);
             const testData = mnistData.nextTestBatch(1000);
@@ -213,8 +209,8 @@
             testData.labels = testData.labels;
 
             const metrics = ['loss', 'val_loss', 'acc', 'val_acc'];
-            const container = { name: 'Model Training', tab: 'Model', styles: { height: '400px' } };
-
+            //const container = { name: 'Model Training', tab: 'Model', styles: { height: '400px' } };
+            const container = document.getElementById('div10');
             await globalModel.fit(trainData.xs, trainData.labels, {
                 batchSize: 512,
                 epochs: 10,
@@ -222,7 +218,7 @@
                 callbacks: tfvis.show.fitCallbacks(container, metrics)
             });
 
-            document.getElementById('div10').innerText = 'Model trained successfully.';
+           // document.getElementById('div10').innerText = 'Model trained successfully.';
         }
 
         async function showConfusionMatrix() {
@@ -236,11 +232,14 @@
             const classAccuracy = await tfvis.metrics.perClassAccuracy(labelsMax, predictions);
             const confusionMatrix = await tfvis.metrics.confusionMatrix(labelsMax, predictions);
 
-            const container = { name: 'Confusion Matrix', tab: 'Evaluation' };
-            tfvis.show.perClassAccuracy(container, classAccuracy);
-            tfvis.render.confusionMatrix(container, { values: confusionMatrix });
+            //const container = { name: 'Confusion Matrix', tab: 'Evaluation' };
+            const container1 =document.getElementById('div13');
+            tfvis.show.perClassAccuracy(container1, classAccuracy);
 
-            document.getElementById('div12').innerText = 'Confusion matrix displayed successfully.';
+            const container2 =document.getElementById('div14');
+            tfvis.render.confusionMatrix(container2, { values: confusionMatrix });
+
+            //document.getElementById('div12').innerText = 'Confusion matrix displayed successfully.';
         }
     </script>
 </body>
